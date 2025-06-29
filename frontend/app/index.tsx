@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  Animated,
 } from "react-native";
 import { router } from "expo-router";
 
@@ -17,6 +18,8 @@ const COLORS = {
   primary: "#6C63FF", // lavender
   secondary: "#A3D9C9", // mint green
   tertiary: "#FFB3BA", // soft pink for onboarding
+  breathing: "#FF6B6B", // breathing button color
+  breathingGlow: "#FF8E8E", // breathing glow effect
   buttonText: "#FFFFFF",
   title: "#1A1B3D", // deeper blue
   subtitle: "#4F5D75",
@@ -24,6 +27,52 @@ const COLORS = {
 };
 
 export default function HomeScreen() {
+  const breathingScale = useRef(new Animated.Value(1)).current;
+  const breathingOpacity = useRef(new Animated.Value(0.7)).current;
+
+  useEffect(() => {
+    // Create breathing animation
+    const breathingAnimation = Animated.loop(
+      Animated.sequence([
+        Animated.parallel([
+          Animated.timing(breathingScale, {
+            toValue: 1.15,
+            duration: 2000,
+            useNativeDriver: true,
+          }),
+          Animated.timing(breathingOpacity, {
+            toValue: 1,
+            duration: 2000,
+            useNativeDriver: true,
+          }),
+        ]),
+        Animated.parallel([
+          Animated.timing(breathingScale, {
+            toValue: 1,
+            duration: 2000,
+            useNativeDriver: true,
+          }),
+          Animated.timing(breathingOpacity, {
+            toValue: 0.7,
+            duration: 2000,
+            useNativeDriver: true,
+          }),
+        ]),
+      ])
+    );
+
+    breathingAnimation.start();
+
+    return () => breathingAnimation.stop();
+  }, []);
+
+  const handleBreathingCallPress = () => {
+    // Generate a random session ID for the breathing call
+    const sessionId = `breathing-${Date.now()}`;
+    // Use string interpolation with type assertion for dynamic routes
+    router.push(`/(call)/${sessionId}` as any);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -31,6 +80,30 @@ export default function HomeScreen() {
         <Text style={styles.subtitle}>
           Your daily companion for peace of mind
         </Text>
+      </View>
+
+      {/* Big Breathing Call Button */}
+      <View style={styles.breathingContainer}>
+        <Animated.View
+          style={[
+            styles.breathingGlow,
+            {
+              transform: [{ scale: breathingScale }],
+              opacity: breathingOpacity,
+            },
+          ]}
+        />
+        <TouchableOpacity
+          style={styles.breathingButton}
+          onPress={handleBreathingCallPress}
+          activeOpacity={0.8}
+        >
+          <Text style={styles.breathingButtonText}>🫁</Text>
+          <Text style={styles.breathingButtonLabel}>Start Breathing</Text>
+          <Text style={styles.breathingButtonSubtitle}>
+            Connect & Breathe Together
+          </Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.buttonContainer}>
@@ -73,7 +146,7 @@ const styles = StyleSheet.create({
     paddingBottom: 60,
   },
   header: {
-    flex: 0.4,
+    flex: 0.25,
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 20,
@@ -93,8 +166,55 @@ const styles = StyleSheet.create({
     lineHeight: 26,
     opacity: 0.9,
   },
-  buttonContainer: {
+  breathingContainer: {
     flex: 0.4,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+  },
+  breathingGlow: {
+    position: "absolute",
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+    backgroundColor: COLORS.breathingGlow,
+    opacity: 0.3,
+  },
+  breathingButton: {
+    width: 180,
+    height: 180,
+    borderRadius: 90,
+    backgroundColor: COLORS.breathing,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: COLORS.breathing,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    elevation: 8,
+    zIndex: 1,
+  },
+  breathingButtonText: {
+    fontSize: 48,
+    marginBottom: 8,
+  },
+  breathingButtonLabel: {
+    color: COLORS.buttonText,
+    fontSize: 20,
+    fontWeight: "700",
+    letterSpacing: 0.5,
+    textAlign: "center",
+  },
+  breathingButtonSubtitle: {
+    color: COLORS.buttonText,
+    fontSize: 12,
+    fontWeight: "400",
+    opacity: 0.9,
+    textAlign: "center",
+    marginTop: 4,
+  },
+  buttonContainer: {
+    flex: 0.25,
     justifyContent: "center",
     paddingHorizontal: 20,
   },
@@ -124,7 +244,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   footer: {
-    flex: 0.2,
+    flex: 0.1,
     justifyContent: "flex-end",
     alignItems: "center",
   },
