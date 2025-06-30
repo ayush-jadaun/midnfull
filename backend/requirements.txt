@@ -15,3 +15,5 @@ aiofiles
 # If you use FastAPI's automatic docs:
 # (FastAPI will install starlette by default)
 starlette
+
+python-multipart

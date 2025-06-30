@@ -5,8 +5,8 @@ import jwt  # PyJWT library: pip install PyJWT
 # Example environment variable placeholders
 # LIVEKIT_API_KEY="your_livekit_api_key"
 # LIVEKIT_API_SECRET="your_livekit_api_secret"
-LIVEKIT_API_KEY = os.getenv("LIVEKIT_API_KEY", "your_livekit_api_key")
-LIVEKIT_API_SECRET = os.getenv("LIVEKIT_API_SECRET", "your_livekit_api_secret")
+LIVEKIT_API_KEY = os.getenv("LIVEKIT_API_KEY", "APIhcDNG5F4UJdY")
+LIVEKIT_API_SECRET = os.getenv("LIVEKIT_API_SECRET", "********")
 
 class LiveKitService:
     """

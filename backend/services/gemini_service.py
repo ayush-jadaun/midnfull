@@ -3,7 +3,7 @@ import requests
 from typing import List, Dict, Any
 
 # Example environment variable: GEMINI_API_KEY="your_gemini_api_key"
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "your_gemini_api_key")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyC9fQJwRJ06tnCTvJzI67aJJD78w6_hOLE")
 GEMINI_API_URL = os.getenv("GEMINI_API_URL", "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent")
 
 class GeminiService:

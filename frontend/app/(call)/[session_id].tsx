@@ -4,14 +4,12 @@ import { useLocalSearchParams } from "expo-router";
 import { LiveKitProvider } from "../../components/LiveKitProvider";
 import { useLiveKit } from "../../hooks/useLiveKit";
 
-
- const CallScreen=()=> {
+const CallScreen = () => {
   const { session_id } = useLocalSearchParams<{ session_id: string }>();
   const { token, error, isLoading, getToken } = useLiveKit();
   const LIVEKIT_WS_URL = "wss://mindfull-4wx7pfsc.livekit.cloud";
 
   useEffect(() => {
-    // Get LiveKit token when screen loads
     getToken(session_id, "user-123"); // Replace with actual user ID
   }, [session_id, getToken]);
 
@@ -43,7 +41,6 @@ import { useLiveKit } from "../../hooks/useLiveKit";
         <Text style={{ color: "white", textAlign: "center", marginTop: 50 }}>
           Call Session: {session_id}
         </Text>
-        {/* Add your video components, controls, etc. here */}
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
@@ -54,5 +51,6 @@ import { useLiveKit } from "../../hooks/useLiveKit";
       </View>
     </LiveKitProvider>
   );
-}
+};
+
 export default CallScreen;

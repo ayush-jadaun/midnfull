@@ -4,10 +4,10 @@ from pydantic import BaseModel
 from typing import Dict, Any
 import uvicorn
 
-from livekit_service import LiveKitService
-from gemini_service import GeminiService
-from elevenlabs_service import ElevenLabsService
-
+from services.livekit_service import LiveKitService
+from services.gemini_service import GeminiService
+from services.eleven_labs import ElevenLabsService
+# ... rest of your code ...
 app = FastAPI(title="Mental Health AI Backend - Minimal Test")
 
 # Initialize services
@@ -84,9 +84,12 @@ async def transcribe_audio(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Transcription error: {str(e)}")
 
-# Serve static files for audio responses (for local dev; in production, use object storage or CDN)
+AUDIO_DIR = "audio_responses"
+os.makedirs(AUDIO_DIR, exist_ok=True)
+
+# Then mount static files
 from fastapi.staticfiles import StaticFiles
-app.mount("/static", StaticFiles(directory="audio_responses"), name="static")
+app.mount("/static", StaticFiles(directory=AUDIO_DIR), name="static")
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=int(os.getenv("PORT", 8000)), reload=True)

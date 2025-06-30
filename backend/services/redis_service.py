@@ -3,7 +3,7 @@ import redis
 from typing import List, Optional
 
 # Example: REDIS_URL="redis://localhost:6379/0"
-REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+REDIS_URL = os.getenv("REDIS_URL", "redis://default:********@smiling-liger-48452.upstash.io:6379")
 
 class RedisService:
     """
