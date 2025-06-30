@@ -24,7 +24,7 @@ export function LiveKitRoom({
   onConnected,
   onDisconnected,
   audio = true,
-  video = true,
+  video = false, // Default to audio-only
   connect = true,
 }: LiveKitRoomProps) {
   // Start the audio session first - following the docs pattern
@@ -44,26 +44,15 @@ export function LiveKitRoom({
       token={token}
       connect={connect}
       options={{
-        // Use screen pixel density to handle screens with differing densities.
-        adaptiveStream: { pixelDensity: "screen" },
-        // Add your existing room options
+        // Optimized for audio-only calls
+        adaptiveStream: false, 
         dynacast: true,
         publishDefaults: {
-          simulcast: true,
-          videoSimulcastLayers: [
-            {
-              width: 320,
-              height: 240,
-              resolution: { width: 320, height: 240 },
-              encoding: { maxBitrate: 150_000, maxFramerate: 15 },
-            },
-            {
-              width: 640,
-              height: 480,
-              resolution: { width: 640, height: 480 },
-              encoding: { maxBitrate: 500_000, maxFramerate: 30 },
-            },
-          ],
+          simulcast: false,
+
+          audioPreset: {
+            maxBitrate: 64_000, 
+          },
         },
       }}
       audio={audio}

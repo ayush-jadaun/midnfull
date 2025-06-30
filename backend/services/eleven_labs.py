@@ -2,16 +2,17 @@ import os
 import requests
 from typing import Optional
 
-# Example environment variable: ELEVENLABS_API_KEY="your_elevenlabs_api_key"
+# Load ElevenLabs API credentials from environment variables, or use defaults for development/testing
 ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY", "sk_5fb10beefb932a890e6fe6e5133434738275a49da7dca69b")
 ELEVENLABS_API_URL = os.getenv("ELEVENLABS_API_URL", "https://api.elevenlabs.io/v1")
 
 class ElevenLabsService:
     """
-    Service for interacting with ElevenLabs API for Speech-to-Text (STT) and Text-to-Speech (TTS).
+    Service for interacting with the ElevenLabs API for both text-to-speech (TTS) and speech-to-text (STT).
     """
 
     def __init__(self, api_key: Optional[str] = None, api_url: Optional[str] = None):
+        # Allow overriding API key and URL, otherwise use environment/defaults
         self.api_key = api_key or ELEVENLABS_API_KEY
         self.api_url = api_url or ELEVENLABS_API_URL
         self.headers = {
@@ -21,13 +22,13 @@ class ElevenLabsService:
     def text_to_speech(
         self,
         text: str,
-        voice_id: str = "Rachel",  # Default English female voice, change as needed
-        model_id: str = "eleven_multilingual_v2",  # Change to match your ElevenLabs model
+        voice_id: str = "Rachel",
+        model_id: str = "eleven_multilingual_v2",
         output_format: str = "mp3"
     ) -> bytes:
         """
-        Generate speech audio from text using ElevenLabs TTS API.
-        Returns audio content (bytes).
+        Convert text to speech using ElevenLabs TTS API.
+        Returns the generated audio as bytes.
         """
         url = f"{self.api_url}/text-to-speech/{voice_id}"
         payload = {
@@ -47,12 +48,12 @@ class ElevenLabsService:
     def speech_to_text(
         self,
         audio_bytes: bytes,
-        model_id: str = "latest",  # Change to actual model if needed
+        model_id: str = "latest",
         language: str = "en"
     ) -> str:
         """
-        Transcribe speech audio to text using ElevenLabs STT API.
-        Returns the transcribed text.
+        Transcribe audio bytes to text using ElevenLabs STT API.
+        Returns the recognized text.
         """
         url = f"{self.api_url}/speech-to-text"
         files = {
@@ -75,16 +76,17 @@ class ElevenLabsService:
 
     def save_audio_to_file(self, audio_bytes: bytes, file_path: str) -> str:
         """
-        Saves the audio bytes to a local file and returns the file path.
+        Save audio bytes to a file on disk.
+        Returns the path to the saved file.
         """
         with open(file_path, "wb") as f:
             f.write(audio_bytes)
         return file_path
 
-# Example usage (for testing; remove/comment out in production)
+# Example usage for local testing
 if __name__ == "__main__":
     service = ElevenLabsService()
-    # Synthesize speech and save to file
+    # Generate speech from text and save the audio to a file
     text = "Hello, this is a test from ElevenLabs TTS."
     audio = service.text_to_speech(text)
     path = service.save_audio_to_file(audio, "output.mp3")

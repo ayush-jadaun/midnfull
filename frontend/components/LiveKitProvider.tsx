@@ -5,6 +5,8 @@ interface LiveKitProviderProps {
   children: React.ReactNode;
   token: string;
   url: string;
+  audio?: boolean;
+  video?: boolean;
   onConnected?: () => void;
   onDisconnected?: () => void;
 }
@@ -13,6 +15,8 @@ export function LiveKitProvider({
   children,
   token,
   url,
+  audio = true,
+  video = false, 
   onConnected,
   onDisconnected,
 }: LiveKitProviderProps) {
@@ -21,6 +25,8 @@ export function LiveKitProvider({
       token={token}
       serverUrl={url}
       connect={true}
+      audio={audio}
+      video={video}
       onConnected={onConnected}
       onDisconnected={onDisconnected}
     >

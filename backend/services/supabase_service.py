@@ -3,7 +3,7 @@ import psycopg2
 import numpy as np
 from typing import List, Optional, Tuple, Dict, Any
 
-# Example environment variable for PostgreSQL connection
+
 # POSTGRES_URL="postgresql://user:password@host:port/dbname"
 POSTGRES_URL = os.getenv("POSTGRES_URL", "postgresql://user:password@localhost:5432/mydb")
 
@@ -17,7 +17,7 @@ POSTGRES_URL = os.getenv("POSTGRES_URL", "postgresql://user:password@localhost:5
 #     embedding VECTOR(1536), -- size depends on your embedding model
 #     created_at TIMESTAMP DEFAULT NOW()
 # );
-VECTOR_DIM = 1536  # Replace with your embedding model's dimension
+VECTOR_DIM = 1536 
 
 class SupabaseService:
     """
