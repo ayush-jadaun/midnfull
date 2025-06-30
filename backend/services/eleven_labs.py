@@ -3,7 +3,7 @@ import requests
 from typing import Optional
 
 # Example environment variable: ELEVENLABS_API_KEY="your_elevenlabs_api_key"
-ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY", "your_elevenlabs_api_key")
+ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY", "sk_5fb10beefb932a890e6fe6e5133434738275a49da7dca69b")
 ELEVENLABS_API_URL = os.getenv("ELEVENLABS_API_URL", "https://api.elevenlabs.io/v1")
 
 class ElevenLabsService:

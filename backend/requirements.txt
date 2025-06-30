@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+pydantic
+redis
+psycopg2-binary
+requests
+PyJWT
+numpy
+python-dotenv
+# For local development static file serving
+aiofiles
+# Optional: If using async Postgres (comment out if not used)
+# asyncpg
+
+# If you use FastAPI's automatic docs:
+# (FastAPI will install starlette by default)
+starlette
